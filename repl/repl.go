@@ -128,15 +128,15 @@ func (r *REPL) run(newLine string) (err error) {
 	fset := token.NewFileSet()
 	pkgs, err := parser.Parse(fset, "", src, 0)
 	if err != nil {
-		// check if into continue mode
-		if errlist, ok := err.(scanner.ErrorList); ok && len(errlist) > 0 {
+		// check if into continue mode.
+		if errList, ok := err.(scanner.ErrorList); ok && len(errList) > 0 {
 			checkIndex := 0
-			if strings.Contains(errlist[0].Error(), "expected declaration") &&
-				len(errlist) > 1 {
+			if strings.Contains(errList[0].Error(), "expected declaration") &&
+				len(errList) > 1 {
 				checkIndex = 1
 			}
-			if strings.Contains(errlist[checkIndex].Error(), `expected ')', found 'EOF'`) ||
-				strings.Contains(errlist[checkIndex].Error(), "expected '}', found 'EOF'") {
+			if strings.Contains(errList[checkIndex].Error(), `expected ')', found 'EOF'`) ||
+				strings.Contains(errList[checkIndex].Error(), "expected '}', found 'EOF'") {
 				r.term.SetPrompt(ContinuePrompt)
 				r.continueMode = true
 				err = nil
